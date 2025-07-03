@@ -11,8 +11,8 @@ export function Draggable({id, children}) {
 
   
   return (
-    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div style = {{border: "none", background: "none", ...style}} ref={setNodeRef} {...listeners} {...attributes}>
       {children}
-    </button>
+    </div>
   );
 }

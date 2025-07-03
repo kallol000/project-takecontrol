@@ -11,8 +11,7 @@ export async function fetchProjects(){
     try {
         const res = await fetch("http://localhost:3000/projects/")
         const data = await res.json()
-        // console.log(data.projectData)
-        return data.projectData
+        return data
     } catch(error) {
         console.log(error)
     }
@@ -23,15 +22,28 @@ export async function fetchProjectDetails(projectId) {
     try {
         const res = await fetch(`http://localhost:3000/projects/${projectId}`)
         const data = await res.json()
-        return data        
+        return data      
     } catch(error) {
         console.log(error)
     }
 }
 
-export async function updateProjectDetails(projectId, payload) {
+export async function createProject(payload) {
     try {
-        const res = await axios.put(`http://localhost:3000/project/${projectId}`, payload)
+        const res = await axios.post(`http://localhost:3000/projects`, payload)
+        console.log(res)
+        // console.log(res)
+        const data = await res.json()
+        console.log(data)
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+export async function createTask(payload) {
+    try {
+        const res = await axios.post(`http://localhost:3000/tasks`, payload)
+        console.log(res)
         // console.log(res)
         const data = await res.json()
         console.log(data)

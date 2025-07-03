@@ -10,20 +10,19 @@ import { Draggable } from "@/app/ui/Draggable"
 import { DndContext } from "@dnd-kit/core"
 import { projectData } from "../../../server/data"
 import TaskCard from "@/app/ui/TaskCard"
+import styles from "../../ui/css/taskCard.module.css"
+import { IconStarFilled, IconStar, IconEdit } from "@tabler/icons-react"
+import Button from "@/app/ui/Button"
 
-import { fetchProjectDetails, updateProjectDetails } from "@/app/lib/data"
+import { fetchProjectDetails, createProject } from "@/app/lib/data"
 
 
 
 export default function Project({params, children}){
     
     // console.log(projectData)
-
-    const [isDropped, setIsDropped] = useState(false)
     const [containers, setContainers] = useState()
     const [data, setData] = useState([])
-    const [taskElems, setTaskElems] = useState([])
-    const [parent, setParent] = useState(0)
     const [bucketReresh, setBucketRefresh] = useState(false)
 
     const projectInfo = useParams()
@@ -37,23 +36,38 @@ export default function Project({params, children}){
     useEffect(() => {
         fetch()
     }, [])
-    
-    // useEffect(() => {
-    //     if(data){
-    //         if(data.tasks){
-    //             setTaskElems(prev => data.tasks.map((task, index) => <TaskCard key={index} id={index}>{task.name}</TaskCard>))
-    //         }
-    //     }
-    // }, [data])
+
+    console.log(data)
 
     useEffect(() => {
         // console.log("refreshed")
         setContainers(prev => buckets.map((bucket, index) => {
             return (
                 <Droppable key={index} id={bucket}>
-                    {bucket}
+                    <div>
+                        {bucket}
+                    </div>
                     {/* {data?.tasks?.filter(task => task.status} */}
-                    {data?.tasks?.filter(task => task.status === bucket).map((elem, idx) => <TaskCard key={idx} id={elem.id}>{elem.name}</TaskCard>)}
+                    {data?.tasks?.filter(task => task.status === bucket).map((elem, idx) => 
+                        <TaskCard key={idx} id={elem.id}>
+                            <div className = { styles.status }></div>
+                            <div className = { styles.main }>
+                                <div className = { styles.title }>
+                                    <h1>{elem.name}</h1>
+                                    {elem.starred ? <IconStarFilled size={16} color="black"/> : <IconStar size={16} /> }
+                                </div>
+                                
+
+                                <div className = { styles.cta }>
+                                    <p>Due Date: {elem.due_date}</p>
+                                    <Button>
+                                        <IconEdit size={16} />
+                                    </Button>
+                                </div>
+
+                            </div>
+                        
+                        </TaskCard>)}
                     {/* <TaskCard id={Math.random()}>Hello</TaskCard> */}
                 </Droppable>
             )
@@ -88,13 +102,13 @@ export default function Project({params, children}){
     // console.log(data)
 
     return (
-        <div style={{padding: " 4rem", display: "flex", gap: "10px"}}>
+        <div className = "task-div">
             <DndContext onDragEnd={(e) => handleDragEnd(e)}>
-                {/* {taskElems} */}
                 {containers}
             </DndContext>
             {/* {projectData} */}
             <button id="button" onClick={() => handleSave(projectId, data)}>Save</button>
+            <button onClick={() => createProject({name: "Write a novel"})} >Create a new project</button>
         </div>
     )
 }

@@ -1,0 +1,9 @@
+.main {
+    height: 50vh;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); 
+    padding: 1rem;
+    border-radius: 0px 0px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
