@@ -12,7 +12,7 @@ export async function fetchProjects(){
         const res = await fetch("http://localhost:3000/projects/")
         const data = await res.json()
         // console.log(data.projectData)
-        return data.projectData
+        return data
     } catch(error) {
         console.log(error)
     }
