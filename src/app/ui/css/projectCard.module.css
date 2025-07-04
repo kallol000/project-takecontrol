@@ -1,5 +1,67 @@
 .projectCard {
-    min-width: 200px;
-    min-height: 50px;
-    border: 2px solid black;
+    display: flex;
+    min-width: 400px;
+    padding: 1rem;
+    border-radius: 10px;
+    /* border: 2px solid #c4c4c4; */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, .1);
+    gap: .8rem;
+}
+
+.title h1 {
+    font-weight: 700;
+    /* font-size: 2em; */
+    color: #254441;
+}
+
+.status {
+    min-width: 5px;
+}
+
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    color: rgb(85, 85, 85);
+    font-size: .9rem;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: last flex-end;
+}
+
+.cta>p {
+    font-weight: 700;
+}
+
+.projectCard h1 {
+    font-size: 1.5rem;
+}
+
+.description {
+    min-height: 3rem;
+    max-height: 3rem;
+    overflow-y: auto;
+}
+
+.complete {
+    background-color: #117E5B;
+    color: #117E5B;
+}
+.inProgress {
+    background-color: #F68537;
+    color: #F68537;
+}
+.toBeStarted {
+    background-color: #5E5E5E;
+    color: #5E5E5E;
 }

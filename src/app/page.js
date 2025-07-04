@@ -1,9 +1,9 @@
-// "use client"
-
-import styles from "./page.module.css";
-// import React, {useState} from "react";
 import Home from "./home/page";
 import { fetchProjects } from "./lib/data";
+// Supports weights 200-800
+import '@fontsource-variable/plus-jakarta-sans';
+// Supports weights 100-900
+// import '@fontsource-variable/inter';
 
 export default async function Main() {
 
@@ -11,7 +11,7 @@ export default async function Main() {
   // console.log(data)
 
   return (
-    <div className={styles.page}>
+    <div>
         <Home data = {data}></Home>
     </div>
   );

@@ -1,16 +1,11 @@
 import { Draggable } from "./Draggable"
+import styles from './css/taskCard.module.css'
 
 export default function TaskCard({children, id}) {
     
-    const style = {
-        border: "2 px solid black",
-        minWidth: "70px",
-        minHeight: "30px"
-    }
-    
     return (
         <Draggable id = {id}>
-            <div style = {style}>
+            <div className = {styles.taskCard}>
                 {children}
             </div>
         </Draggable>
