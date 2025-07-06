@@ -3,6 +3,7 @@ import Link from "next/link"
 import { IconStarFilled, IconStar } from '@tabler/icons-react';
 import styles from '../ui/css/projectCard.module.css'
 import Button from "../ui/Button";
+import { Toaster } from "sonner";
 
 export default function Home({data}) {
 
@@ -29,7 +30,7 @@ export default function Home({data}) {
                                 }
                             }
                             >
-                            <Button>
+                            <Button variant = "default">
                                 Visit
                             </Button>
                         </Link>
@@ -40,10 +41,19 @@ export default function Home({data}) {
     
     
     return(
-        <div>
+        <div className = "main">
             <div className = "project-div">
                 {projectElems}
             </div>
+            
+            <Link href = {{ pathname: `/create` }}>
+                <Button variant = "action">
+                    Create
+                </Button>
+            </Link>
+
+            <Toaster />
+            
         </div>
     )
 }

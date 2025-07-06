@@ -31,10 +31,7 @@ export async function fetchProjectDetails(projectId) {
 export async function createProject(payload) {
     try {
         const res = await axios.post(`http://localhost:3000/projects`, payload)
-        console.log(res)
-        // console.log(res)
-        const data = await res.json()
-        console.log(data)
+        return res
     } catch(err) {
         console.log(err)
     }

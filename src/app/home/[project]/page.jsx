@@ -11,7 +11,7 @@ import { DndContext } from "@dnd-kit/core"
 import { projectData } from "../../../server/data"
 import TaskCard from "@/app/ui/TaskCard"
 import styles from "../../ui/css/taskCard.module.css"
-import { IconStarFilled, IconStar, IconEdit } from "@tabler/icons-react"
+import { IconStarFilled, IconStar, IconEdit, IconPointFilled } from "@tabler/icons-react"
 import Button from "@/app/ui/Button"
 
 import { fetchProjectDetails, createProject } from "@/app/lib/data"
@@ -24,6 +24,8 @@ export default function Project({params, children}){
     const [containers, setContainers] = useState()
     const [data, setData] = useState([])
     const [bucketReresh, setBucketRefresh] = useState(false)
+    const [hovered, setHovered] = useState("")
+
 
     const projectInfo = useParams()
     const projectId = projectInfo.project
@@ -32,6 +34,7 @@ export default function Project({params, children}){
         const res = await fetchProjectDetails(projectId)
         setData(prev => res[0])
     }
+
 
     useEffect(() => {
         fetch()
@@ -43,29 +46,23 @@ export default function Project({params, children}){
         // console.log("refreshed")
         setContainers(prev => buckets.map((bucket, index) => {
             return (
-                <Droppable key={index} id={bucket}>
+                <Droppable key={index} id={bucket} hover = {bucket === hovered ? true : false}>
                     <div>
                         {bucket}
                     </div>
                     {/* {data?.tasks?.filter(task => task.status} */}
                     {data?.tasks?.filter(task => task.status === bucket).map((elem, idx) => 
-                        <TaskCard key={idx} id={elem.id}>
-                            <div className = { styles.status }></div>
-                            <div className = { styles.main }>
-                                <div className = { styles.title }>
-                                    <h1>{elem.name}</h1>
-                                    {elem.starred ? <IconStarFilled size={16} color="black"/> : <IconStar size={16} /> }
-                                </div>
-                                
-
-                                <div className = { styles.cta }>
-                                    <p>Due Date: {elem.due_date}</p>
-                                    <Button>
-                                        <IconEdit size={16} />
-                                    </Button>
-                                </div>
-
+                        <TaskCard key={ idx } id={ elem.id }>
+                            <div className = { styles.title }>
+                                <h1>{ elem.name }</h1>    
                             </div>
+
+                            <div className = { styles.cta }>
+                                <IconPointFilled color = { elem.status === 'to-be-started' ? '#5E5E5E' : elem.status === 'in-progress' ? '#F68537' : '#117E5B' } size = { 16 } />
+                                <IconEdit size={ 16 } />
+                            </div>
+
+                            
                         
                         </TaskCard>)}
                     {/* <TaskCard id={Math.random()}>Hello</TaskCard> */}
@@ -76,9 +73,16 @@ export default function Project({params, children}){
 
     // // console.log(data)
 
+
+    const handleDragOver = (e) => {
+        const { over } = e
+        setHovered(prev => over.id)
+    }
+
     const handleDragEnd = (e) => {
-        console.log(e)
+        // console.log(e)
         const {over, active} = e;
+        // console.log("over", over)
         if(over){
             setData(prev => {
                 let result = prev
@@ -107,8 +111,7 @@ export default function Project({params, children}){
                 {containers}
             </DndContext>
             {/* {projectData} */}
-            <button id="button" onClick={() => handleSave(projectId, data)}>Save</button>
-            <button onClick={() => createProject({name: "Write a novel"})} >Create a new project</button>
+            <Button variant = "action" >Create a new task</Button>
         </div>
     )
 }

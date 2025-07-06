@@ -1,18 +1,13 @@
 /* CSS */
-.buttonDefault {
+.button {
   align-items: center;
-  background-color: #171717;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: .25rem;
-  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
-  font-family:'Plus Jakarta Sans', sans-serif;
+  border-radius: 5px;
   box-sizing: border-box;
-  color: #f8f8ff;
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
   margin: 0;
-  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  padding: .5rem 2rem;
   position: relative;
   transition: all 250ms;
   user-select: none;
@@ -22,25 +17,31 @@
   width: auto;
 }
 
-.buttonDefault:hover,
-.buttonDefault:focus {
-    border-color: rgba(0, 0, 0, 0.15);
-    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-    background-color: #f8f8ff;
-    color: #171717;
-
-    
+.default {
+  background-color: #dfdfe9;
+  color: #171717;
 }
 
-.buttonDefault:hover {
-  /* transform: translateY(-1px); */
+.default:hover, 
+.default:focus {
+  background-color: #cacad8;
 }
 
-.buttonDefault:active {
+.default:active {
+  background-color: #f8f8ff;
+}
+
+
+.action {
   background-color: #171717;
   color: #f8f8ff;
-  border-color: rgba(0, 0, 0, 0.15);
-  box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
-  /* color: rgba(0, 0, 0, 0.65); */
-  transform: translateY(0);
+}
+
+.action:hover, 
+.action:focus {
+  background-color: #2b2b2b;
+}
+
+.default:active {
+  background-color: #171717;
 }

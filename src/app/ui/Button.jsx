@@ -1,7 +1,7 @@
 import styles from '../ui/css/button.module.css'
 
-export default function Button ({ children }) {
+export default function Button ({ children, variant, onClick }) {
     return (
-        <button className = { styles.buttonDefault }>{ children }</button>
+        <button onClick = {onClick} className = { `${styles.button} ${styles[variant]}` }>{ children }</button>
     )
 }

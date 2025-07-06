@@ -8,7 +8,6 @@ import '@fontsource-variable/plus-jakarta-sans';
 export default async function Main() {
 
   const data = await fetchProjects()
-  // console.log(data)
 
   return (
     <div>
