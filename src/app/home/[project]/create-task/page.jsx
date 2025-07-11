@@ -1,34 +1,44 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import Form from "../ui/Form";
-import { DatePicker } from "../ui/DatePicker";
+import Form from "@/app/ui/Form";
+import { DatePicker } from "@/app/ui/DatePicker";
 import { toast, Toaster } from "sonner";
-import Button from "../ui/Button";
+import ButtonUser from "@/app/ui/Button";
 import { redirect } from 'next/navigation'
-import { createProject } from "../lib/data";
+import { useParams } from "next/navigation";
+import { createTask } from "@/app/lib/data";
+import { useRouter } from "next/navigation";
+// import { createProject } from "../lib/data";
 
+export default function CreateTask({}) {
+    
+    const router = useRouter()
 
-export default function Create({ children }) {
-
+    const { project } = useParams()
+    
     const [ formData, setFormData ] = useState({
         name: "",
         description: "",
         start_date: null,
         due_date: null,
-        starred: false,
-        status: "to-be-started"
+        status: "to-be-started",
+        project_id: project
     })
+
+    const [dateRange, setDateRange] = useState(['7/16/2025', '7/25/2025'])
+
     
+
     
     // console.log(formData)
     
     const handleChange = (e) => {
-        const { value, name, checked, type } = e.target
+        const { value, name, type } = e.target
 
         setFormData(prev => ({
             ...prev,
-            [name] : type === "checkbox" ? checked : value
+            [name]: value
         }))
     }
     const handleDateChange = (name, date) => {
@@ -49,39 +59,45 @@ export default function Create({ children }) {
         e.preventDefault()
 
         if(!formData.name) {
-            toast.warning("Please enter a name for your project")
+            toast.warning("Please enter a name for your Task")
             return
         }
 
+
+
         try {
-            const res = await createProject(formData)
+            const res = await createTask(formData)
             if(res.status === 200) {
-                toast.success("New Project Created Successfully")
+                toast.success("New Task Created Successfully")
             }
         } catch ( err ) {
             console.log(err)
         } finally {
-            redirect('/')
+            router.back()
+            // router.refresh()
         }
 
     }
 
     return (
-        <div className="create-project-div">
+        <div className="create-task-div">
+            
+            <h1>Create a new Task</h1>
+            
             <Form>
                 <div className="form-area">
                 
                     <label htmlFor="project-id" > Name </label>
-                    <input id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
+                    <input className="form-area-item" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
                     
                     <label htmlFor="project-description"> Description </label>
-                    <input id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
+                    <input className="form-area-item" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
                     
                     <label> Start Date </label>
-                    <DatePicker name = "start_date" value={ formData.start_date } label = "Start Date" handleChange = { handleDateChange }/>
+                    <DatePicker name = "start_date" value={ formData.start_date } minDate = {dateRange[0]} maxDate={dateRange[1]} label = "Start Date" handleChange = { handleDateChange }/>
                     
                     <label> Due Date </label>
-                    <DatePicker name = "due_date" value={ formData.due_date } label = "Due Date" handleChange = { handleDateChange }/>
+                    <DatePicker name = "due_date" value={ formData.due_date } minDate = {dateRange[0]} maxDate={dateRange[1]} label = "Due Date" handleChange = { handleDateChange }/>
 
                     <label htmlFor="project-status">Status</label>
                     <select id="project-status" name="status" value = { formData.status } onChange = { handleChange }>
@@ -90,18 +106,15 @@ export default function Create({ children }) {
                         <option value="opel">Complete</option>
                     </select>
 
-                    <label htmlFor="project-favorite"> Favorite? </label>
-                    <input id="project-favorite" type="checkbox" name="starred" checked={ formData.starred } onChange={ handleChange } />
-
-                    <Button onClick = {handleSubmit} variant = "action">
+                    <ButtonUser onClick = {handleSubmit} variant = "action">
                         Submit
-                    </Button>
+                    </ButtonUser>
                     {/* <button onClick = {handleSubmit}></button> */}
                     
                 </div>    
             </Form>
         
-            <Toaster richColors />
+            {/* <Toaster richColors /> */}
         </div>
     );
 }

@@ -1,0 +1,82 @@
+.darkBG {
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.modal {
+    min-width: 800px;
+    min-height: 200px;
+    background: white;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* .modalHeader {
+    height: 50px;
+    background: white;
+    overflow: hidden;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+} */
+
+/* .heading {
+    margin: 0;
+    padding: 10px;
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 18px;
+    text-align: center;
+} */
+
+.modalContent {
+    height: 100%;
+    padding: 1rem 2rem;
+    color: #171717;
+}
+/* 
+.modalActions {
+    position: absolute;
+    bottom: 2px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.actionsContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+} */
+
+.close {
+    position: fixed;
+    color: rgb(78, 78, 78);
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.close:hover {
+    color: rgb(14, 14, 14);
+    transition: all .3s;
+    transform: rotate(90deg);
+}
+
+
+
+

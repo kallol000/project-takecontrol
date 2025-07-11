@@ -3,10 +3,16 @@
     /* border: 2px solid black; */
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     padding: 1rem 2rem;
+    justify-content: space-between;
 }
 
 .navbar h1 {
     color: #254441;
     font-weight: 800;
     font-size: 1.75rem;
+}
+
+.navbar div {
+    display: flex;
+    gap: 1rem;
 }

@@ -1,13 +1,14 @@
 /* CSS */
-.button {
+.buttonuser {
   align-items: center;
   border-radius: 5px;
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
+  gap: 1rem;
   justify-content: center;
   margin: 0;
-  padding: .5rem 2rem;
+  padding: .5rem 1rem;
   position: relative;
   transition: all 250ms;
   user-select: none;
@@ -19,7 +20,7 @@
 
 .default {
   background-color: #dfdfe9;
-  color: #171717;
+  color: hsl(0, 0%, 9%);
 }
 
 .default:hover, 

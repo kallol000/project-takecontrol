@@ -43,8 +43,20 @@ export async function createTask(payload) {
         console.log(res)
         // console.log(res)
         const data = await res.json()
-        console.log(data)
+        return data
+        // console.log(data)
     } catch(err) {
+        console.log(err)
+    }
+}
+
+export async function updateProjectDetails( id, payload ) {
+    try {
+        const res = await axios.put(`http://localhost:3000/projects/${id}`, payload)
+        // const data = await  res.json()
+        // return res
+        console.log(res)
+    } catch ( err ) {
         console.log(err)
     }
 }

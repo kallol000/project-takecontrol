@@ -4,11 +4,13 @@ import { IconStarFilled, IconStar } from '@tabler/icons-react';
 import styles from '../ui/css/projectCard.module.css'
 import Button from "../ui/Button";
 import { Toaster } from "sonner";
+import ButtonUser from "../ui/Button";
+// import { DialogDemo } from "../ui/Modal";
 
 export default function Home({data}) {
 
     const projectElems = data.map((project, index) => 
-    
+        
         <ProjectCard key={project.id} id = {project.id}>   
             <div className = {`${styles.status} ${project.status === 'to-be-started' ? styles.toBeStarted : project.status === 'in-progress' ? styles.inProgress : styles.complete}`}></div>
             <div className = {styles.main}>
@@ -46,13 +48,9 @@ export default function Home({data}) {
                 {projectElems}
             </div>
             
-            <Link href = {{ pathname: `/create` }}>
-                <Button variant = "action">
-                    Create
-                </Button>
-            </Link>
+            <Toaster richColors />
 
-            <Toaster />
+            {/* <DialogDemo /> */}
             
         </div>
     )

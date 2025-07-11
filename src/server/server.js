@@ -38,7 +38,7 @@ app.get('/projects/:id', async(req, res) => {
     const {data, error} = await supabase
     .from('projects')
     .select(`
-      id, name, description, start_date, due_date,
+      id, name, description, starred, start_date, due_date,
       tasks ( id, name, description, start_date, due_date, status)
       `)
     .eq('id', id)
@@ -92,11 +92,16 @@ app.put('/projects/:id', async (req, res) => {
   
   const { id } = req.params
   const payload = req.body
+  const projectPayload = {...payload}
+  delete projectPayload.tasks
+  projectPayload.starred = !projectPayload.starred
+
+  // console.log(projectPayload)
   
   try {
     const {data, error} = await supabase
     .from('projects')
-    .update(payload)
+    .update(projectPayload)
     .eq('id', id)
     .select()
     
