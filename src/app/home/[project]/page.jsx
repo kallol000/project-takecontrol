@@ -8,7 +8,7 @@ import { Droppable } from "@/app/ui/Droppable"
 import { DndContext } from "@dnd-kit/core"
 import TaskCard from "@/app/ui/TaskCard"
 import taskstyles from "../../ui/css/taskCard.module.css"
-import { IconStarFilled, IconStar, IconEdit, IconPointFilled } from "@tabler/icons-react"
+import { IconTrashX, IconStarFilled, IconStar, IconEdit, IconPointFilled } from "@tabler/icons-react"
 import ButtonUser from "@/app/ui/Button"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -18,40 +18,46 @@ import { updateProjectDetails } from "@/app/lib/data"
 import { DatePicker } from "@/app/ui/DatePicker"
 import styles from "../../ui/css/projectPage.module.css"
 import { Button } from "@/app/components/ui/button"
+import { Toaster, toast } from "sonner";
+import { SelectUser } from "@/app/ui/SelectUser"
+
 
 
 export default function Project({params, children}){
     
     const router = useRouter()
-    // console.log(projectData)
     const [containers, setContainers] = useState()
     const [projectData, setProjectData] = useState({
-    name: "",
-    description: "",
-    starred: false,
-    start_date: null,
-    due_date: null,
-    tasks: []
-})
+        name: "",
+        description: "",
+        status: "",
+        starred: false,
+        start_date: null,
+        due_date: null,
+        tasks: []
+    })
     const [bucketReresh, setBucketRefresh] = useState(false)
-
-
+    
+    
     const { project } = useParams()
     const pathname = usePathname()
-
-
+    
+    
     const fetch = async () => {
         const res = await fetchProjectDetails( project )
         setProjectData(prev => res[0])
     }
-
-    // console.log(projectData)
+    
+    console.log(projectData)
 
 
     useEffect(() => {
         fetch()
-        console.log("fetched")
     }, [])
+
+    const handleDeleteTask = () => {
+        console.log("hello")
+    }
 
 
     useEffect(() => {
@@ -71,9 +77,11 @@ export default function Project({params, children}){
 
                             <div className = { taskstyles.cta }>
                                 <IconPointFilled color = { elem.status === 'to-be-started' ? '#5E5E5E' : elem.status === 'in-progress' ? '#F68537' : '#117E5B' } size = { 16 } />
+                                
                                 <Link href = {`${pathname}/${elem.id}`}>
                                     <IconEdit size={ 16 } />
                                 </Link>
+                                <IconTrashX onClick = { handleDeleteTask } size = { 16 } />
                             </div>
 
                             
@@ -117,8 +125,6 @@ export default function Project({params, children}){
 
         
         date = date.toLocaleDateString()
-        // console.log(name, date)
-
 
         setProjectData(prev => ({
             ...prev,
@@ -130,9 +136,12 @@ export default function Project({params, children}){
 
         try {
             const res = await updateProjectDetails( id, payload )
-            console.log(res)
+            if(res.status === 200) {
+                toast.success("Succesfully saved")
+                console.log("hello")
+            }
         } catch( err ) {
-            console.log(err)
+            // toast.error("there was an error")
         } finally {
             router.refresh()
         }
@@ -140,7 +149,14 @@ export default function Project({params, children}){
     }
 
 
-    console.log(projectData)
+    const handleSelectChange = (status) => {
+        setProjectData(prev => ({
+            ...prev, 
+            status: status
+        }))
+    }
+
+
 
     return (
         <div>
@@ -151,7 +167,7 @@ export default function Project({params, children}){
                 
                 <div className = { `${styles.inputDiv} ${styles.descriptionDiv}` }>
                     {/* <label htmlFor="project-description"> Description </label> */}
-                    <input  id="project-description" className="input-borderless subtitle" name="description" value = { projectData.description } onChange = { handleChange } />
+                    <input  id="project-description" className="input-borderless subtitle" name="description" placeholder="Add a description" value = { projectData.description } onChange = { handleChange } />
                 </div>
 
                 <div className = { styles.inputDiv }>
@@ -164,18 +180,20 @@ export default function Project({params, children}){
                     <DatePicker name = "due_date" placeHolder = "Due Date" value={ projectData.due_date } label = "Due Date" handleChange = { handleDateChange }/>
                 </div>
                 
-                <div className = { styles.inputDiv }>
-                    {/* <label htmlFor="project-status">Status</label> */}
+                {/* <div className = { styles.inputDiv }>
                     <select id="project-status" name="status" value = { projectData.status } onChange = { handleChange }>
                         <option value="to-be-started">To be Started</option>
                         <option value="in-progress">In Progress</option>
-                        <option value="opel">Complete</option>
+                        <option value="completed">Complete</option>
                     </select>                
-                </div>
+                </div> */}
+
+
+                <SelectUser placeholder = "status" label = "status" options = {["to-be-started", "in-Progress", "completed"]} value = { projectData.status} onChange = {handleSelectChange}/>
 
                 <div className = { styles.inputDiv }>
                     <label htmlFor="project-starred"> Favorite? </label>
-                    <input type="checkbox" id="project-starred" name="starred" value={ projectData.starred }  />
+                    <input type="checkbox" id="project-starred" name="starred" checked={ projectData.starred }  onChange={ handleChange } />
                 </div>
 
             </div>

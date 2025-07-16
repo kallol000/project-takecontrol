@@ -18,7 +18,7 @@ export function DatePicker( { name, value, minDate, maxDate, handleChange, place
     <div className="w-full flex flex-col gap-3 p-4">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
+          <Button 
             variant="outline"
             id="date"
             className="w-full justify-between p-4 m-2"

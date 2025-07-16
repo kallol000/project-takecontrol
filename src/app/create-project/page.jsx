@@ -3,19 +3,18 @@
 import { useState, useEffect } from "react";
 import Form from "../ui/Form";
 import { DatePicker } from "../ui/DatePicker";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import Button from "../ui/Button";
 import { redirect } from 'next/navigation'
 import { createProject } from "../lib/data";
-import Modal from "../ui/Modal";
 
 export default function CreateProject() {
 
     const [ formData, setFormData ] = useState({
         name: "",
         description: "",
-        start_date: null,
-        due_date: null,
+        start_date: "",
+        due_date: "",
         starred: false,
         status: "to-be-started"
     })

@@ -1,4 +1,5 @@
 .projectCard {
+    /* transition: all 1s; */
     display: flex;
     min-width: 400px;
     padding: 1rem;
