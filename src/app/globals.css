@@ -42,7 +42,7 @@ a {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
   gap: 20px;
-
+  /* transition: all 1s; */
 }
 
 .create-project-div {
@@ -104,13 +104,17 @@ input:focus{
 button {
   padding: .5rem 1rem;
   border-radius: 5px;
-  box-shadow: none
+  box-shadow: none;
+  width: 100%;
+  /* border: 1px solid ; */
+  /* var(--border) */
 }
 
 select {
   border: 1px solid oklch(0.922 0 0); 
   width: 100%;
   border-radius: 5px;
+  padding: .5rem 1rem;
   
 }
 
@@ -331,6 +335,7 @@ input[type=checkbox]:not(.switch):checked {
 }
 
 .dark {
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

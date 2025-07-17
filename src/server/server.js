@@ -1,49 +1,24 @@
 import express from 'express';
-import cors from 'cors'
 
+import cors from 'cors'
 import supabase from './connection.js';
+import router from './projects.js';
+import projectsRouter from './projects.js';
 
 const app = express();
 const PORT = 3000;
 
+const projects = projectsRouter
+
+
+
 app.use(express.json()); //to parse incoming reuests
 app.use(cors()) //to use locally
 
-// fetch all projects
-app.get('/projects', async (req, res) => {
-try {
-  const {data, error} = await supabase
-    .from("projects")
-    .select('*')
+app.use('/projects', projects)
 
-    if (error) return res.status(400).json({ error: error.message });
-    res.json(data);
-  } catch(error) {
-    console.log(error)
-  }
-})
 
-//fetch specific projects along with its tasks
-app.get('/projects/:id', async(req, res) => {
-  
-  const { id } = req.params
-  
-  try {
-    const {data, error} = await supabase
-    .from('projects')
-    .select(`
-      id, name, description, starred, start_date, due_date,
-      tasks ( id, name, description, start_date, due_date, status)
-      `)
-    .eq('id', id)
-    
-    if (error) return res.status(400).json({ error: error.message });
-    res.json(data);
-    
-  } catch (error) {
-    console.log(error)
-  }
-})
+
 
 //create a new project
 app.post('/projects', async (req, res) => {
