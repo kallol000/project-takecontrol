@@ -1,19 +1,13 @@
 import express from 'express';
-import {createClient} from '@supabase/supabase-js'
 import cors from 'cors'
-import 'dotenv/config';
+
+import supabase from './connection.js';
 
 const app = express();
 const PORT = 3000;
 
-// connecting to Supabase
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 app.use(express.json()); //to parse incoming reuests
 app.use(cors()) //to use locally
-
 
 // fetch all projects
 app.get('/projects', async (req, res) => {
@@ -172,6 +166,6 @@ app.delete('/projects/:id', async (req, res) => {
   } 
 })
 // Start the server
-app.listen(PORT, () => {
-console.log(`Server is running on port ${PORT}`);
-});
+  app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  });
