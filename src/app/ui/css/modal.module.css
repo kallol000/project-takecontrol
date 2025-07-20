@@ -18,8 +18,8 @@
 }
 
 .modal {
-    min-width: 800px;
-    min-height: 200px;
+    min-width: auto;
+    /* min-height: 200px; */
     background: white;
     color: white;
     border-radius: 5px;

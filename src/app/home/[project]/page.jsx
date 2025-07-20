@@ -14,12 +14,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { fetchProjectDetails, createProject } from "@/app/lib/data"
 import { useRouter } from "next/navigation"
-import { updateProjectDetails } from "@/app/lib/data"
+import { updateProjectDetails, deleteProject, deleteTask } from "@/app/lib/data"
 import { DatePicker } from "@/app/ui/DatePicker"
 import styles from "../../ui/css/projectPage.module.css"
 import { Button } from "@/app/components/ui/button"
 import { Toaster, toast } from "sonner";
 import { SelectUser } from "@/app/ui/SelectUser"
+import Modal from "@/app/ui/Modal"
 
 
 
@@ -37,6 +38,10 @@ export default function Project({params, children}){
         tasks: []
     })
     const [bucketReresh, setBucketRefresh] = useState(false)
+    const [modalOpen, setModalOpen] = useState(false)
+    const [deleteProjectModal, setDeleteProjectModal] = useState(false)
+    const [deleteTaskModal, setDeleteTaskModal] = useState(false)
+    const [taskToBeDeleted, setTaskToBeDeleted] = useState(null)
     
     
     const { project } = useParams()
@@ -48,16 +53,16 @@ export default function Project({params, children}){
         setProjectData(prev => res[0])
     }
     
-    console.log(projectData)
+    // console.log(projectData)
 
 
     useEffect(() => {
         fetch()
     }, [])
 
-    const handleDeleteTask = () => {
-        console.log("hello")
-    }
+    // const handleDeleteTask = () => {
+    //     console.log("hello")
+    // }
 
 
     useEffect(() => {
@@ -81,7 +86,7 @@ export default function Project({params, children}){
                                 <Link href = {`${pathname}/${elem.id}`}>
                                     <IconEdit size={ 16 } />
                                 </Link>
-                                <IconTrashX onClick = { handleDeleteTask } size = { 16 } />
+                                <IconTrashX style={{cursor: "pointer"}}  size = { 16 } />
                             </div>
 
                             
@@ -95,11 +100,34 @@ export default function Project({params, children}){
 
     // console.log(projectData)
 
+    const handleDeleteProjectModalOpen = () => {
+        setModalOpen(true)
+        setDeleteProjectModal(true)
+    }
+    
+    const handleDeleteTaskModalOpen = () => {
+        setModalOpen(true)
+        setDeleteTaskModal(true)
+    }
 
-    const handleDragEnd = (e) => {
-        // console.log(e)
+    const handleModalClose = () => {
+        setModalOpen(false)
+        setDeleteProjectModal(false)
+        setDeleteTaskModal(false)
+    } 
+
+
+    const handleDragEnd = async (e) => {
+        
         const {over, active} = e;
-        // console.log("over", over)
+
+        // console.log(over)
+        if(over && over.id === "delete") {
+            setTaskToBeDeleted(prev => active.id)
+            handleDeleteTaskModalOpen()
+            return
+        }
+        
         if(over){
             setProjectData(prev => {
                 let result = prev
@@ -120,15 +148,20 @@ export default function Project({params, children}){
             [name]: type === "checkbox" ? checked : value
         }))
     }
-
+    
     const handleDateChange = (name, date) => {
-
         
         date = date.toLocaleDateString()
-
+        
         setProjectData(prev => ({
             ...prev,
             [name]: date
+        }))
+    }
+    const handleSelectChange = (status) => {
+        setProjectData(prev => ({
+            ...prev, 
+            status: status
         }))
     }
 
@@ -145,16 +178,43 @@ export default function Project({params, children}){
         } finally {
             router.refresh()
         }
-        // console.log(id, projectData)
+    }
+
+    const handleDelete = async ( id ) => {
+        try{
+            const res = await deleteProject( id )
+            console.log(res)
+            if( res.status === 200 && res.data.length > 0 ) {
+                toast.success("Deleted Successfully")
+                router.back()
+            } else {
+                toast.error("There was an error")
+            }
+        } catch ( err ) {
+            toast.error("There was an error")
+        } finally {
+        }
+    }
+
+    const handleDeleteTask = async (id) => {
+        try {
+                const res = await deleteTask( id ) 
+                console.log(res)
+
+                if(res.status === 200 && res.data.length > 0) {
+                    toast.success("Deleted Successfully")
+                } else {
+                    toast.error("There was an error")
+                }
+
+            } catch ( err ) {
+                toast.error("There was an error")
+            }
+
+            return
     }
 
 
-    const handleSelectChange = (status) => {
-        setProjectData(prev => ({
-            ...prev, 
-            status: status
-        }))
-    }
 
 
 
@@ -179,15 +239,6 @@ export default function Project({params, children}){
                     {/* <label> Due Date </label> */}
                     <DatePicker name = "due_date" placeHolder = "Due Date" value={ projectData.due_date } label = "Due Date" handleChange = { handleDateChange }/>
                 </div>
-                
-                {/* <div className = { styles.inputDiv }>
-                    <select id="project-status" name="status" value = { projectData.status } onChange = { handleChange }>
-                        <option value="to-be-started">To be Started</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Complete</option>
-                    </select>                
-                </div> */}
-
 
                 <SelectUser placeholder = "status" label = "status" options = {["to-be-started", "in-Progress", "completed"]} value = { projectData.status} onChange = {handleSelectChange}/>
 
@@ -200,13 +251,40 @@ export default function Project({params, children}){
             <div className = {styles.taskDiv}>
                 
                 <DndContext onDragEnd={(e) => handleDragEnd(e)}>
-                    {containers}
+                    {/* <div className = {styles.taskContainers}> */}
+                        {containers}
+                    {/* </div> */}
+                    
+                    <div className = {styles.deleteContainer} >
+                        <Droppable id = "delete" key="delete">
+                            <IconTrashX />
+                            <p>Drop a task here to delete </p>
+                        </Droppable>
+                    </div>
                 </DndContext>
             </div>
             <div className = { styles.saveDiv }>
+                <ButtonUser onClick={ handleDeleteProjectModalOpen } variant = "destructive">Delete</ButtonUser>
                 <ButtonUser onClick={() => handleSave( project, projectData )} variant = "action">Save</ButtonUser>
             </div>
 
+            {
+                modalOpen &&
+                <Modal handleClose={ handleModalClose }>
+                    {/* deleteProjectModal */}
+                    <div className = { styles.confirmationDiv }>
+                        <h1 className = { styles.confirmationHeader }>Are you sure?</h1>
+                        <p className = { styles.confirmationInfo }>{`You are about to delete ${deleteProjectModal ? `the project ${projectData.name}` : `this task`} ` }</p>
+                        <div className = { styles.confirmationAction }>
+                            <ButtonUser onClick = { handleModalClose } variant = "default" >Cancel</ButtonUser>
+                            <ButtonUser onClick = {deleteProjectModal ? () => handleDelete( project ) : () => handleDeleteTask(taskToBeDeleted) } variant = "destructive">Yes, delete</ButtonUser>
+                        </div>
+                    </div>
+                </Modal>
+            }
+
+
+            <Toaster richColors />
         </div>
     )
 }

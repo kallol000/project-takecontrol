@@ -8,13 +8,14 @@ import Button from "../ui/Button";
 import { Toaster, toast } from "sonner";
 import { useState, useEffect } from "react";
 import { TooltipTrigger, Tooltip, TooltipContent } from "@/components/ui/tooltip";
-
+import { useRouter } from "next/navigation";
 
 export default function Home({data}) {
 
+
     const [ projects, setProjects ] = useState([])
     const [ projectElems, setProjectElems ] = useState([])
-
+    const router = useRouter()
     // console.log(projects)
 
     const handleChange = ( selectedProject ) => {
@@ -34,6 +35,11 @@ export default function Home({data}) {
     useEffect(() => {
         setProjects(data)
     },[])
+
+    useEffect (() => {
+        router.refresh()
+    }, [])
+
     // console.log(data)
 
     useEffect (() => {

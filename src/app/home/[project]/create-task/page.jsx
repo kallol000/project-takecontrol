@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation'
 import { useParams } from "next/navigation";
 import { createTask } from "@/app/lib/data";
 import { useRouter } from "next/navigation";
+import { SelectUser } from "@/app/ui/SelectUser";
 // import { createProject } from "../lib/data";
 
 export default function CreateTask({}) {
@@ -53,6 +54,13 @@ export default function CreateTask({}) {
             [name]: date
         }))
     }
+
+    const handleSelectChange = (status) => {
+        setFormData(prev => ({
+            ...prev, 
+            status: status
+        }))
+    }
     
     const handleSubmit = async (e) => {
 
@@ -67,11 +75,12 @@ export default function CreateTask({}) {
 
         try {
             const res = await createTask(formData)
+            console.log(res)
             if(res.status === 200) {
                 toast.success("New Task Created Successfully")
             }
         } catch ( err ) {
-            console.log(err)
+            toast.error("There was an error")
         } finally {
             router.back()
             // router.refresh()
@@ -87,24 +96,15 @@ export default function CreateTask({}) {
             <Form>
                 <div className="form-area">
                 
-                    <label htmlFor="project-id" > Name </label>
-                    <input className="form-area-item" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
+                    <input placeholder="Name" className="form-area-item" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
                     
-                    <label htmlFor="project-description"> Description </label>
-                    <input className="form-area-item" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
+                    <input placeholder="Description" className="form-area-item" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
                     
-                    <label> Start Date </label>
-                    <DatePicker name = "start_date" value={ formData.start_date } minDate = {dateRange[0]} maxDate={dateRange[1]} label = "Start Date" handleChange = { handleDateChange }/>
+                    <DatePicker placeHolder = "Start Date" name = "start_date" value={ formData.start_date } minDate = {dateRange[0]} maxDate={dateRange[1]} label = "Start Date" handleChange = { handleDateChange }/>
                     
-                    <label> Due Date </label>
-                    <DatePicker name = "due_date" value={ formData.due_date } minDate = {dateRange[0]} maxDate={dateRange[1]} label = "Due Date" handleChange = { handleDateChange }/>
+                    <DatePicker placeHolder = "Due Date" name = "due_date" value={ formData.due_date } minDate = {dateRange[0]} maxDate={dateRange[1]} label = "Due Date" handleChange = { handleDateChange }/>
 
-                    <label htmlFor="project-status">Status</label>
-                    <select id="project-status" name="status" value = { formData.status } onChange = { handleChange }>
-                        <option value="to-be-started">To be Started</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="opel">Complete</option>
-                    </select>
+                    <SelectUser placeholder = "status" label = "status" options = {["to-be-started", "in-progress", "completed"]} value = { formData.status} onChange = {handleSelectChange}/>
 
                     <ButtonUser onClick = {handleSubmit} variant = "action">
                         Submit
@@ -113,6 +113,8 @@ export default function CreateTask({}) {
                     
                 </div>    
             </Form>
+
+            {/* <Toaster richColors /> */}
         
             {/* <Toaster richColors /> */}
         </div>
