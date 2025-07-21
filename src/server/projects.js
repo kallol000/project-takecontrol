@@ -39,6 +39,71 @@ projectsRouter.get('/:id', async(req, res) => {
 })
 
 
+//create a new project
+projectsRouter.post('/', async (req, res) => {
+  const payload = req.body
+  
+  try {
+    const {data, error} = await supabase
+    .from('projects')
+    .insert(payload)
+    .select()
+    
+    if (error) return res.status(400).json({ error: error.message });
+    res.json(data);
+  
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
+//update details of a project
+projectsRouter.put('/:id', async (req, res) => {
+  
+  const { id } = req.params
+  const payload = req.body
+  const projectPayload = {...payload}
+  delete projectPayload.tasks
+  projectPayload.starred = !projectPayload.starred
+
+  // console.log(projectPayload)
+  
+  try {
+    const {data, error} = await supabase
+    .from('projects')
+    .update(projectPayload)
+    .eq('id', id)
+    .select()
+    
+    if (error) return res.status(400).json({ error: error.message });
+    res.json(data);
+  
+  } catch(error) {
+    console.log(error)
+  }
+})
+
+//delete a project
+projectsRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const { data, error } = await supabase
+    .from('projects')
+    .delete()
+    .eq('id', id)
+    .select()
+
+    if(error) return res.status(400).json({ error: error.message })
+    res.json(data)
+  
+  } catch (error) {
+    console.log(error)
+  } 
+})
+
+
 
 export default projectsRouter
 

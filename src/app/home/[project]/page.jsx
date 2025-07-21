@@ -1,7 +1,6 @@
 "use client"
 
 import { useParams, useSearchParams } from "next/navigation"
-import Form from "@/app/ui/Form"
 import { buckets } from "@/app/lib/data"
 import { useState, useEffect } from "react"
 import { Droppable } from "@/app/ui/Droppable"
@@ -14,10 +13,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { fetchProjectDetails, createProject } from "@/app/lib/data"
 import { useRouter } from "next/navigation"
-import { updateProjectDetails } from "@/app/lib/data"
+import { updateProjectDetails, deleteProject } from "@/app/lib/data"
 import { DatePicker } from "@/app/ui/DatePicker"
 import styles from "../../ui/css/projectPage.module.css"
-import { Button } from "@/app/components/ui/button"
 import { Toaster, toast } from "sonner";
 import { SelectUser } from "@/app/ui/SelectUser"
 
@@ -148,6 +146,19 @@ export default function Project({params, children}){
         // console.log(id, projectData)
     }
 
+    const handleDelete = async(id) => {
+        try {
+            const res = await deleteProject(id)
+            // console.log(res)
+            if(res.status === 200) {
+                toast.success("Deleted successfully")
+                router.back()
+            }
+        } catch ( err ) {
+            console.log( err )
+        }
+    }
+
 
     const handleSelectChange = (status) => {
         setProjectData(prev => ({
@@ -204,6 +215,7 @@ export default function Project({params, children}){
                 </DndContext>
             </div>
             <div className = { styles.saveDiv }>
+                <ButtonUser onClick={() => handleDelete( project )} variant = "action">Delete</ButtonUser>
                 <ButtonUser onClick={() => handleSave( project, projectData )} variant = "action">Save</ButtonUser>
             </div>
 

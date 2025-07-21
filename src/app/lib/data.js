@@ -28,6 +28,8 @@ export async function fetchProjectDetails(projectId) {
     }
 }
 
+// Create
+
 export async function createProject(payload) {
     try {
         const res = await axios.post(`http://localhost:3000/projects`, payload)
@@ -50,6 +52,8 @@ export async function createTask(payload) {
     }
 }
 
+
+// Update
 export async function updateProjectDetails( id, payload ) {
     try {
         const res = await axios.put(`http://localhost:3000/projects/${id}`, payload)
@@ -61,6 +65,19 @@ export async function updateProjectDetails( id, payload ) {
     }
 }
 
+
+
+// Delete
+
+export async function deleteProject( id ) {
+    try {
+        const res = await axios.delete(`http://localhost:3000/projects/${id}`)
+        // const data = await res.json()
+        return res
+    } catch ( err ) {
+        console.log(err)
+    }
+}
 // module.exports(projectData)
 
 
