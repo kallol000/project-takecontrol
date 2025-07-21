@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import Button from "../ui/Button";
 import { redirect } from 'next/navigation'
 import { createProject } from "../lib/data";
+import { SelectUser } from "../ui/SelectUser";
 
 export default function CreateProject() {
 
@@ -42,6 +43,13 @@ export default function CreateProject() {
             [name]: date
         }))
     }
+
+    const handleSelectChange = (status) => {
+        setFormData(prev => ({
+            ...prev, 
+            status: status
+        }))
+    }
     
     const handleSubmit = async (e) => {
 
@@ -52,13 +60,20 @@ export default function CreateProject() {
             return
         }
 
+        let payload = {...formData}
+        payload.start_date = payload.start_date === "" ? null : payload.start_date
+        payload.due_date = payload.due_date === "" ? null : payload.due_date
+
+        console.log(payload)
+
         try {
-            const res = await createProject(formData)
+            const res = await createProject(payload)
             if(res.status === 200) {
                 toast.success("New Project Created Successfully")
             }
         } catch ( err ) {
             console.log(err)
+            toast.error("There was an error")
         } finally {
             redirect('/')
         }
@@ -74,27 +89,23 @@ export default function CreateProject() {
                 <Form>
                     <div className="form-area">
                     
-                        <label htmlFor="project-id" > Name </label>
-                        <input className="form-area-item" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
+                        <input placeholder="Name" className="form-area-item" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
                         
-                        <label htmlFor="project-description"> Description </label>
-                        <input className="form-area-item" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
+                        <input placeholder="Description" className="form-area-item" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
                         
-                        <label> Start Date </label>
-                        <DatePicker name = "start_date" value={ formData.start_date } label = "Start Date" handleChange = { handleDateChange }/>
-                        
-                        <label> Due Date </label>
-                        <DatePicker name = "due_date" value={ formData.due_date } label = "Due Date" handleChange = { handleDateChange }/>
 
-                        <label htmlFor="project-status">Status</label>
-                        <select id="project-status" name="status" value = { formData.status } onChange = { handleChange }>
-                            <option value="to-be-started">To be Started</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="opel">Complete</option>
-                        </select>
+                        <div style={{display: "flex", gap: "1rem"}}>
+                            <DatePicker placeHolder = "Start Date" name = "start_date" value={ formData.start_date } label = "Start Date" handleChange = { handleDateChange }/>
+                            <DatePicker placeHolder = "Due Date" name = "due_date" value={ formData.due_date } label = "Due Date" handleChange = { handleDateChange }/>
+                        </div>
 
-                        <label htmlFor="project-favorite"> Favorite? </label>
-                        <input id="project-favorite" type="checkbox" name="starred" checked={ formData.starred } onChange={ handleChange } />
+                        <SelectUser placeholder = "status" label = "status" options = {["to-be-started", "in-Progress", "completed"]} value = { formData.status} onChange = {handleSelectChange}/>
+                        
+
+                        <div style={{display: "flex", gap: "1rem"}}>
+                            <label htmlFor="project-favorite"> Favorite? </label>
+                            <input id="project-favorite" type="checkbox" name="starred" checked={ formData.starred } onChange={ handleChange } />
+                        </div>
 
                         <Button onClick = {handleSubmit} variant = "action">
                             Submit

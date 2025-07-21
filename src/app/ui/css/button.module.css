@@ -46,3 +46,14 @@
 .default:active {
   background-color: #171717;
 }
+
+
+.destructive {
+  background-color: #AA0E30;
+  color: #f8f8f8;
+}
+
+.destructive:hover,
+.destructive:focus {
+  background-color: #8d0825;
+}

@@ -42,15 +42,13 @@ export async function createProject(payload) {
 export async function createTask(payload) {
     try {
         const res = await axios.post(`http://localhost:3000/tasks`, payload)
-        console.log(res)
-        // console.log(res)
-        const data = await res.json()
-        return data
-        // console.log(data)
+        return res
     } catch(err) {
-        console.log(err)
+        return err
     }
 }
+
+// Update APIs
 
 
 // Update
@@ -62,6 +60,27 @@ export async function updateProjectDetails( id, payload ) {
         console.log(res)
     } catch ( err ) {
         console.log(err)
+    }
+}
+
+
+// Delete APIs
+export async function deleteProject( id ) {
+    try {
+        const res = await axios.delete(`http://localhost:3000/projects/${id}`)
+        return res
+    } catch ( err ) {
+        console.log(err)
+    }
+
+}
+
+export async function deleteTask( id ) {
+    try {
+        const res = await axios.delete(`http://localhost:3000/tasks/${id}`)
+        return res
+    } catch ( err ) {
+        return err
     }
 }
 

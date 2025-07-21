@@ -10,7 +10,7 @@ export function Droppable({id, children}) {
   
   
   return (
-    <div ref={setNodeRef} className = {`${styles.main} ${isOver ? styles.hovered : null} `} >
+    <div ref={setNodeRef} className = {`${id === "delete" ? styles.delete : styles.main} ${isOver ? id === "delete" ? styles.hoveredDelete : styles.hovered : null} `} >
       {children}
     </div>
   );

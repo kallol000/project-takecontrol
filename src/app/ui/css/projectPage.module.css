@@ -35,9 +35,19 @@
 
 .taskDiv {
   margin: 2rem;
+  /* height: 60vh; */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  /* grid-template-rows: 700px 100px; */
   gap: 20px;
+}
+
+.deleteContainer {
+    grid-column: 2/3;
+    /* max-height: 100px; */
+    /* background-color: black;
+    width: 100%;
+    height: 100%; */
 }
 
 .saveDiv {
@@ -45,4 +55,32 @@
     display: flex;
     justify-content: end;
     gap: 1rem;
+}
+
+
+.confirmationDiv {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    gap: 1rem;
+    /* height: 100%; */
+}
+
+.confirmationHeader {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.confirmationInfo {
+    font-size: 1rem;
+    /* font-weight: 700; */
+}
+.confirmationAction {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    font-weight: 600;
+    /* font-weight: 700; */
 }
