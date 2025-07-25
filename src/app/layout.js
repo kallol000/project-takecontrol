@@ -27,6 +27,7 @@ export default function RootLayout({ modal, children }) {
         {children}
         <div style={{paddingLeft: "2rem"}} >
         </div>
+        
         {modal}
         <Toaster richColors />
       </body>

@@ -19,7 +19,7 @@ projectsRouter.get('/', async (req, res) => {
   }
 })
 
-// Fetch details of a specific projects
+// Fetch details of a specific project
 projectsRouter.get('/:id', async(req, res) => {
   
   const { id } = req.params
@@ -78,6 +78,45 @@ projectsRouter.delete('/:id', async (req, res) => {
     console.log(error)
   } 
 })
+
+// update a project
+projectsRouter.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const payload = req.body
+
+  const projectId = parseInt(id)
+
+  try {
+    const { data, error } = await supabase.rpc('update_project_and_tasks', {
+      p_project_id: projectId,
+      p_payload: payload
+    });
+
+
+
+    if(error) return res.status(400).json({ error: error.message })
+    res.json(data)
+  
+  } catch (error) {
+    console.log(error)
+  } 
+})
+
+projectsRouter.put('/favourite/:id', async (req, res) => {
+  const { id } = req.params
+  const payload = req.body
+
+  const { data, error } = await supabase
+    .from("projects")
+    .update(payload)
+    .eq("id", id)
+
+    if(error) return res.status(400).json({ error: error.message })
+    res.json(data)
+})
+
+
+// projectsRouter.put()
 
 
 

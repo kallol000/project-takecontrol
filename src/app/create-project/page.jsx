@@ -8,6 +8,7 @@ import Button from "../ui/Button";
 import { redirect } from 'next/navigation'
 import { createProject } from "../lib/data";
 import { SelectUser } from "../ui/SelectUser";
+import { useRouter } from "next/navigation";
 
 export default function CreateProject() {
 
@@ -20,7 +21,7 @@ export default function CreateProject() {
         status: "to-be-started"
     })
     
-    
+    const router = useRouter()
     // console.log(formData)
     
     const handleChange = (e) => {
@@ -75,7 +76,8 @@ export default function CreateProject() {
             console.log(err)
             toast.error("There was an error")
         } finally {
-            redirect('/')
+            router.push('/')
+            // redirect('/')
         }
 
     }
@@ -89,9 +91,9 @@ export default function CreateProject() {
                 <Form>
                     <div className="form-area">
                     
-                        <input placeholder="Name" className="form-area-item" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
+                        <input placeholder="Name" className="form-area-item input-user" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
                         
-                        <input placeholder="Description" className="form-area-item" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
+                        <input placeholder="Description" className="form-area-item input-user" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
                         
 
                         <div style={{display: "flex", gap: "1rem"}}>

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source "../../.flowbite-react/class-list.json";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -14,8 +16,8 @@ body {
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  /* padding: 0; */
+  /* margin: 0; */
 }
 
 a {
@@ -70,11 +72,22 @@ a {
   font-weight: 600;
 }
 
+.loading-save {
+  background-color: "#000000"
+  padding: 1rem
+}
+
 
 .form-area {
   display: Flex;
   flex-direction: column;
   gap: 1rem;
+  padding: .5rem;
+}
+
+.form-area > h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .form-area-item {
@@ -84,30 +97,26 @@ a {
 
 
 input{
-  padding: 0 8px;
   vertical-align: middle;
   border-radius: 2px;
   font-family: 'Plus Jakarta Sans Variable', sans-serif;
-  /* min-height: 36px; */
   border: 1px solid #cacad8;
   transition: all 0.2s ease-in-out 0s;
   font-size: 1rem;
   line-height: 1rem;
   font-weight: normal;
+  border-radius: 5px;
 }
 input:focus{
   outline: none;
   border: 1px solid #cacad8;
 }
 
-button {
+.input-user {
   padding: .5rem 1rem;
-  border-radius: 5px;
-  box-shadow: none;
-  width: 100%;
-  /* border: 1px solid ; */
-  /* var(--border) */
+  width: 500px;
 }
+
 
 select {
   border: 1px solid oklch(0.922 0 0); 
@@ -127,7 +136,7 @@ select {
   border: none;
   color: #171717;
   width: 100%;
-  padding: 0;
+  /* padding: 0; */
 }
 
 .input-borderless:focus {
@@ -307,15 +316,15 @@ input[type=checkbox]:not(.switch):checked {
   --popover: #f8f8ff;
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
-  --primary-foreground: #f8f8ff;
+  --primary-foreground: #d6d6e8;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: #f8f8ff;
   --muted-foreground: oklch(0.556 0 0);
-  --accent: #f8f8ff;
+  --accent: #ddddea;
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: #cacad8;
   --input: #f8f8ff;
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);

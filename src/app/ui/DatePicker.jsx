@@ -15,19 +15,19 @@ export function DatePicker( { name, value, minDate, maxDate, handleChange, place
   const [open, setOpen] = React.useState(false)
 
   return (
-    <div className="w-full flex flex-col gap-3 p-4">
+    <div className="w-full flex flex-col gap-3">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button 
             variant="outline"
             id="date"
-            className="w-full justify-between p-4 m-2"
+            className="text-base cursor-pointer justify-between rounded-[5px]"
           >
             {value ? value : placeHolder}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto overflow-hidden p-4" align="start">
+        <PopoverContent className="w-auto overflow-hidden" align="start">
           <Calendar
             mode="single"
             selected={value}

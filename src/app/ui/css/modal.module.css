@@ -3,10 +3,9 @@
     width: 100vw;
     height: 100vh;
     z-index: 1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
+    top: 0%;
+    left: 0%;
+    position: fixed;
 }
 
 .centered {
@@ -20,7 +19,7 @@
 .modal {
     min-width: auto;
     /* min-height: 200px; */
-    background: white;
+    background: #f8f8ff;
     color: white;
     border-radius: 5px;
     box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);

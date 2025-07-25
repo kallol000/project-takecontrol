@@ -10,13 +10,31 @@ import { useParams } from "next/navigation";
 import { createTask } from "@/app/lib/data";
 import { useRouter } from "next/navigation";
 import { SelectUser } from "@/app/ui/SelectUser";
+import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { fetchProjectDetails } from "@/app/lib/data";
+// import { useParams } from "next/navigation";
 // import { createProject } from "../lib/data";
 
 export default function CreateTask({}) {
     
     const router = useRouter()
-
     const { project } = useParams()
+
+    console.log(project)
+
+    const fetch = async () => {
+        const res = await fetchProjectDetails(project)
+        const data = res[0]
+        setDateRange(prev => ([data.start_date, data.due_date]))
+    }
+
+    useEffect(() => {
+        fetch()
+    }, [])
+
+
+
     
     const [ formData, setFormData ] = useState({
         name: "",
@@ -27,7 +45,7 @@ export default function CreateTask({}) {
         project_id: project
     })
 
-    const [dateRange, setDateRange] = useState(['7/16/2025', '7/25/2025'])
+    const [dateRange, setDateRange] = useState([])
 
     
 
@@ -46,9 +64,7 @@ export default function CreateTask({}) {
 
         
         date = date.toLocaleDateString()
-        // console.log(name, date)
-
-
+        
         setFormData(prev => ({
             ...prev,
             [name]: date
@@ -78,12 +94,11 @@ export default function CreateTask({}) {
             console.log(res)
             if(res.status === 200) {
                 toast.success("New Task Created Successfully")
+                router.back()
             }
         } catch ( err ) {
             toast.error("There was an error")
         } finally {
-            router.back()
-            // router.refresh()
         }
 
     }
@@ -96,9 +111,9 @@ export default function CreateTask({}) {
             <Form>
                 <div className="form-area">
                 
-                    <input placeholder="Name" className="form-area-item" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
+                    <input placeholder="Name" className="form-area-item input-user" id="project-name" name = "name" value = { formData.name } onChange = { handleChange } required />
                     
-                    <input placeholder="Description" className="form-area-item" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
+                    <input placeholder="Description" className="form-area-item input-user" id="project-description" name="description" value = { formData.description } onChange = { handleChange } />
                     
                     <DatePicker placeHolder = "Start Date" name = "start_date" value={ formData.start_date } minDate = {dateRange[0]} maxDate={dateRange[1]} label = "Start Date" handleChange = { handleDateChange }/>
                     

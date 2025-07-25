@@ -2,7 +2,7 @@
 
 import { useParams, useSearchParams } from "next/navigation"
 import { buckets } from "@/app/lib/data"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useTransition, startTransition } from "react"
 import { Droppable } from "@/app/ui/Droppable"
 import { DndContext } from "@dnd-kit/core"
 import TaskCard from "@/app/ui/TaskCard"
@@ -19,13 +19,15 @@ import styles from "../../ui/css/projectPage.module.css"
 import { Toaster, toast } from "sonner";
 import { SelectUser } from "@/app/ui/SelectUser"
 import Modal from "@/app/ui/Modal"
+import { Loader } from 'rsuite';
+import { Spinner } from "flowbite-react"
 
 
-
-export default function Project({params, children}){
+export default function Project({ params, children }){
     
     const router = useRouter()
     const [containers, setContainers] = useState()
+    const [data, setData] = useState()
     const [projectData, setProjectData] = useState({
         name: "",
         description: "",
@@ -40,31 +42,31 @@ export default function Project({params, children}){
     const [deleteProjectModal, setDeleteProjectModal] = useState(false)
     const [deleteTaskModal, setDeleteTaskModal] = useState(false)
     const [taskToBeDeleted, setTaskToBeDeleted] = useState(null)
-    
+    const [refresh, setRefresh] = useState(false)
+    const [isPending, startTransition] = useTransition()
     
     const { project } = useParams()
     const pathname = usePathname()
     
-    
     const fetch = async () => {
-        const res = await fetchProjectDetails( project )
-        setProjectData(prev => res[0])
+        startTransition(async() => {
+            const res = await fetchProjectDetails( project )
+            // console.log(res)
+            setData(prev => res[0])
+            setProjectData(prev => res[0])
+        })
     }
     
-    // console.log(projectData)
-
-
+    console.log(isPending)
+    
     useEffect(() => {
         fetch()
+    }, [pathname, refresh])
+    
+    useEffect(() => {
     }, [])
 
-    // const handleDeleteTask = () => {
-    //     console.log("hello")
-    // }
-
-
     useEffect(() => {
-        // console.log("refreshed")
         setContainers(prev => buckets.map((bucket, index) => {
             return (
                 <Droppable key={index} id={bucket}>
@@ -84,13 +86,8 @@ export default function Project({params, children}){
                                 <Link href = {`${pathname}/${elem.id}`}>
                                     <IconEdit size={ 16 } />
                                 </Link>
-                                <IconTrashX style={{cursor: "pointer"}}  size = { 16 } />
                             </div>
-
-                            
-                        
                         </TaskCard>)}
-                    {/* <TaskCard id={Math.random()}>Hello</TaskCard> */}
                 </Droppable>
             )
         }))
@@ -184,13 +181,14 @@ export default function Project({params, children}){
             console.log(res)
             if( res.status === 200 && res.data.length > 0 ) {
                 toast.success("Deleted Successfully")
-                router.back()
+                router.replace('/')
             } else {
                 toast.error("There was an error")
             }
         } catch ( err ) {
             toast.error("There was an error")
         } finally {
+
         }
     }
 
@@ -201,20 +199,25 @@ export default function Project({params, children}){
 
                 if(res.status === 200 && res.data.length > 0) {
                     toast.success("Deleted Successfully")
+                    handleModalClose()
+                    setRefresh(!refresh)
                 } else {
                     toast.error("There was an error")
                 }
 
             } catch ( err ) {
                 toast.error("There was an error")
-            }
-
+            } 
             return
     }
 
 
 
-
+    if(isPending) {
+        return <div style = {{height: "60vh", width: "100vw", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Spinner />
+            </div>
+    }
 
     return (
         <div>
@@ -224,17 +227,14 @@ export default function Project({params, children}){
                 </div>        
                 
                 <div className = { `${styles.inputDiv} ${styles.descriptionDiv}` }>
-                    {/* <label htmlFor="project-description"> Description </label> */}
                     <input  id="project-description" className="input-borderless subtitle" name="description" placeholder="Add a description" value = { projectData.description } onChange = { handleChange } />
                 </div>
 
                 <div className = { styles.inputDiv }>
-                    {/* <label> Start Date </label> */}
                     <DatePicker name = "start_date" placeHolder = "Start Date" value={ projectData.start_date } label = "Start Date" handleChange = { handleDateChange }/>
                 </div>
                 
                 <div className = { styles.inputDiv }>
-                    {/* <label> Due Date </label> */}
                     <DatePicker name = "due_date" placeHolder = "Due Date" value={ projectData.due_date } label = "Due Date" handleChange = { handleDateChange }/>
                 </div>
 
@@ -249,9 +249,7 @@ export default function Project({params, children}){
             <div className = {styles.taskDiv}>
                 
                 <DndContext onDragEnd={(e) => handleDragEnd(e)}>
-                    {/* <div className = {styles.taskContainers}> */}
-                        {containers}
-                    {/* </div> */}
+                    {containers}
                     
                     <div className = {styles.deleteContainer} >
                         <Droppable id = "delete" key="delete">

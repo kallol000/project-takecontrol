@@ -29,7 +29,9 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.6.0",
     "express": "^5.1.0",
+    "flowbite-react": "^0.12.3",
     "lucide-react": "^0.525.0",
+    "motion": "^12.23.6",
     "mysql": "github:mysqljs/mysql",
     "next": "15.3.3",
     "next-themes": "^0.4.6",
@@ -38,6 +40,7 @@
     "react": "^19.0.0",
     "react-day-picker": "^9.7.0",
     "react-dom": "^19.0.0",
+    "rsuite": "^5.83.2",
     "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11"

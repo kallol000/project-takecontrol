@@ -12,14 +12,14 @@ import {
 
 export function SelectUser({ placeholder, label, options, value, onChange }) {
 
-    const optionItems = options.map(value => <SelectItem className = "m-px" key = {value} value={ value }>{ value }</SelectItem>)
+    const optionItems = options.map(value => <SelectItem className="text-base cursor-pointer" key = {value} value={ value }>{ value }</SelectItem>)
 
     return (
-        <Select  onValueChange = {onChange}>
-        <SelectTrigger className = " border-solid border-inherit border-1" >
+        <Select onValueChange = {onChange}>
+        <SelectTrigger className = "text-base w-full border-solid border-inherit border-1 hover:bg-accent" >
             <SelectValue placeholder={ value } />
         </SelectTrigger>
-        <SelectContent className= "p-4">
+        <SelectContent >
             <SelectGroup >
             <SelectLabel className="text-base">{ label }</SelectLabel>
             { optionItems }

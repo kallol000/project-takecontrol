@@ -15,7 +15,8 @@ export default function Layout({ modal, children }) {
         <div>
             <div style = {{ position: "absolute", top: "6.5rem", right: "2rem" }}>
                 <Link href = {{
-                    pathname: `${pathname}/create-task`
+                    pathname: `${pathname}/create-task`,
+                    query: {prevPath: pathname}
                     // query: {}
                 }}>
                     <ButtonUser variant = "default">

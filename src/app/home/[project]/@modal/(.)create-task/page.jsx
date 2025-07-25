@@ -17,6 +17,7 @@ export default function Page() {
 
     return(
         <Modal handleClose = { handleClose } >
+            
             <CreateTask />
         </Modal>
     )

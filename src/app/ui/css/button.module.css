@@ -41,6 +41,7 @@
 .action:hover, 
 .action:focus {
   background-color: #2b2b2b;
+  font-weight: 600;
 }
 
 .default:active {
@@ -56,4 +57,5 @@
 .destructive:hover,
 .destructive:focus {
   background-color: #8d0825;
+  font-weight: 600;
 }
